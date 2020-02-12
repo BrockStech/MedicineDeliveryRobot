@@ -104,6 +104,18 @@
    			<artifactId>mysql-connector-java</artifactId>
    			<version>8.0.11</version>
 		</dependency>
+		
+		<dependency>
+    		<groupId>com.pi4j</groupId>
+    		<artifactId>pi4j-core</artifactId>
+   			<version>1.2</version>
+		</dependency>
+		
+		<dependency>
+            <groupId>com.pi4j</groupId>
+            <artifactId>pi4j-device</artifactId>
+            <version>1.2</version>
+        </dependency>
         
     </dependencies>
 
