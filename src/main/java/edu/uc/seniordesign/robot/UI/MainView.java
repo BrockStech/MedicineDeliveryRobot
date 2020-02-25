@@ -59,21 +59,48 @@ public MainView() {
     progressBar.setIndeterminate(true);
     progressBar.setVisible(false);
     
-    // Create Button to call the delivery robot
-    Button callRobotButton = new Button("Call Delivery Robot");
-    callRobotButton.getStyle().set("backgroundColor", "white");
-    callRobotButton.getStyle().set("color", "black");
-    callRobotButton.addClickListener(event -> 
-    { 
-    	startRobot.startRobot();
-    	progressBar.setVisible(true); 
-    	deliveryTime.automatedDelivery();
-    });
+    // Bedroom 1 Button
+    Button bedroom1Button = new Button("Bedroom 1");
+    createButton(bedroom1Button);
+    
+    // Bedroom 2 Button
+    Button bedroom2Button = new Button("Bedroom 2");
+    createButton(bedroom2Button);
+    
+    // Living Room Button
+    Button livingRoomButton = new Button("Living Room");
+    createButton(livingRoomButton);
+    
+    // Living Room Button
+    Button dinningRoomButton = new Button("Dinning Room");
+    createButton(dinningRoomButton);
+    
+    // Kitchen Button
+    Button kitchenButton = new Button("Kitchen");
+    createButton(kitchenButton);
+    
+    // Bathroom Button
+    Button bathroomButton = new Button("Bathroom");
+    createButton(bathroomButton);
 	
-    // Create vertical layout for the delivery robot button
+    // Create vertical layout for the 3 of 6 rooms (popular)
+ 	VerticalLayout popularRoomLayout = new VerticalLayout();
+ 	popularRoomLayout.setAlignItems(Alignment.CENTER);
+ 	popularRoomLayout.add(bedroom1Button, bedroom2Button, livingRoomButton);
+ 	
+ 	// Create vertical layout for the 3 of 6 rooms (unpopular)
+  	VerticalLayout unpopularRoomLayout = new VerticalLayout();
+  	unpopularRoomLayout.setAlignItems(Alignment.CENTER);
+  	unpopularRoomLayout.add(dinningRoomButton, kitchenButton, bathroomButton);
+ 	
+  	// HorizontalLayout for 6 Rooms
+    HorizontalLayout roomsLayout = new HorizontalLayout();
+    roomsLayout.add(popularRoomLayout, unpopularRoomLayout);
+    
+    // Create vertical layout for the delivery robot buttons
 	VerticalLayout callRobotLayout = new VerticalLayout();
 	callRobotLayout.setAlignItems(Alignment.CENTER);
-	callRobotLayout.add(callRobotText, callRobotButton);
+	callRobotLayout.add(callRobotText, roomsLayout);
 	
 	//Create Reset Scheduled Times Button
 	Button resetTimeButton = new Button("Reset");
@@ -189,5 +216,16 @@ public MainView() {
 		  scheduledRobotTimes.add(scheduledTimesList);
 		  robotScheduleLayout.add(scheduledRobotTimes);
 	  }  
-}
+  }
+  
+  private void createButton(Button button)
+  {
+	  button.getStyle().set("backgroundColor", "white");
+	  button.getStyle().set("color", "black");
+	  button.setWidth("150px");
+	  button.addClickListener(event -> 
+	  { 
+		  startRobot.startRobot();
+	  });
+  }
 }
