@@ -8,21 +8,21 @@ import java.util.ArrayList;
 
 public class Results
 {
-	ResultSet rs = null;
+	ResultSet resultSet = null;
     Connection connection = null;
     PreparedStatement statement = null;
     
 	public ArrayList<String> fetchResults()
     {
         ArrayList<String> results = new ArrayList<String>();
-		String query = "SELECT scheduled_time FROM schedule";
+		String sqlStatement = "SELECT scheduled_time FROM schedule";
         try
         {
-        	initalizeConnection(query);
+        	initalizeConnection(sqlStatement);
             
-            while ((rs.next()))
+            while ((resultSet.next()))
             {
-            	results.add(rs.getString("scheduled_time"));
+            	results.add(resultSet.getString("scheduled_time"));
             }
         }
         catch (SQLException e)
@@ -46,13 +46,20 @@ public class Results
         return results;
     }
 	
+	private void initalizeConnection(String query) throws SQLException
+	{
+		connection = JDBCMySQLConnection.getConnection();
+	    statement = connection.prepareStatement(query);
+	    resultSet = statement.executeQuery();
+	}
+	
 	public void insertResults(ArrayList<String> results)
     {  
-        String truncateTable = "TRUNCATE TABLE schedule;";
+        String sqlStatement = "TRUNCATE TABLE schedule;";
         try
         {
         	connection = JDBCMySQLConnection.getConnection();
-        	PreparedStatement truncateStatement = connection.prepareStatement(truncateTable);
+        	PreparedStatement truncateStatement = connection.prepareStatement(sqlStatement);
         	truncateStatement.executeUpdate();
         	truncateStatement.close();
         	executeInsertQuery(results, connection);
@@ -78,20 +85,13 @@ public class Results
         return;
     }
 	
-	private void initalizeConnection(String query) throws SQLException
-	{
-		connection = JDBCMySQLConnection.getConnection();
-	    statement = connection.prepareStatement(query);
-	    rs = statement.executeQuery();
-	}
-	
 	private void executeInsertQuery(ArrayList<String> results, Connection connection) throws SQLException
 	{
-		String query = "INSERT INTO schedule (id, scheduled_time) VALUES (?,?)";
+		String sqlStatement = "INSERT INTO schedule (id, scheduled_time) VALUES (?,?)";
 		int i = 1;
 		for (String result : results)
 		{
-			PreparedStatement insertStatement = connection.prepareStatement(query);
+			PreparedStatement insertStatement = connection.prepareStatement(sqlStatement);
 			insertStatement.setInt(1, i);
 			insertStatement.setString(2, result);
         	insertStatement.executeUpdate();

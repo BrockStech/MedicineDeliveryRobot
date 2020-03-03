@@ -60,12 +60,20 @@ public MainView() {
     progressBar.setVisible(false);
     
     // Bedroom 1 Button
-    Button bedroom1Button = new Button("Bedroom 1");
+    Button bedroom1Button = new Button("Index Motor");
     createButton(bedroom1Button);
+    bedroom1Button.addClickListener(event -> 
+	  { 
+		  startRobot.testIndexMotor();
+	  });
     
     // Bedroom 2 Button
-    Button bedroom2Button = new Button("Bedroom 2");
+    Button bedroom2Button = new Button("Test Sensor");
     createButton(bedroom2Button);
+    bedroom2Button.addClickListener(event -> 
+	  { 
+		  startRobot.testSensors();
+	  });
     
     // Living Room Button
     Button livingRoomButton = new Button("Living Room");
@@ -114,7 +122,6 @@ public MainView() {
 	submitTimeButton.getStyle().set("color", "black");
 	submitTimeButton.setVisible(false);
 	
-    
 	// Create time picker/scheduler 
 	VerticalLayout robotScheduleLayout = new VerticalLayout();
     TimePicker scheduleRobotTime = new TimePicker();
@@ -223,9 +230,5 @@ public MainView() {
 	  button.getStyle().set("backgroundColor", "white");
 	  button.getStyle().set("color", "black");
 	  button.setWidth("150px");
-	  button.addClickListener(event -> 
-	  { 
-		  startRobot.startRobot();
-	  });
   }
 }
