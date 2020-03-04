@@ -8,6 +8,7 @@ public class UltrasonicSensor
 	private final GpioController gpioController = GpioFactory.getInstance();
 	private final GpioPinDigitalOutput sensorTrigPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_05, PinState.LOW);
 	private final GpioPinDigitalInput sensorEchoPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_DOWN);
+	private int timeUntilTimeout = 5000;
 	private long startTime;
 	private long endTime;
 
@@ -50,13 +51,18 @@ public class UltrasonicSensor
 	private long measureDistanceInCM()
 	{
 		System.out.print("Ultrasonic Sensor is Low \n");
-		while (sensorEchoPin.isLow()) {}
+		while (sensorEchoPin.isLow() && !isTimeout()) {}
 		System.out.print("Ultrasonic Sensor is High \n");
 		startTime = System.nanoTime();
 		while (sensorEchoPin.isHigh()) {}
 		System.out.print("Ultrasonic Sensor is Low2 \n");
 		endTime = System.nanoTime();
 		return ((endTime - startTime) / CONVERT_NANO_TIME_TO_CM);
+	}
+
+	private boolean isTimeout()
+	{
+		return timeUntilTimeout-- <= 0;
 	}
 
 	private void shutdownSensor()
