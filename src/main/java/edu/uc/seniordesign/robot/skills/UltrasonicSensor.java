@@ -1,28 +1,28 @@
-package edu.uc.seniordesign.robot.movement;
+package edu.uc.seniordesign.robot.skills;
 
 import com.pi4j.io.gpio.*;
 
 public class UltrasonicSensor 
 {
 	private final static int CONVERT_NANO_TIME_TO_CM = 58200;
-	private final GpioController gpioController = GpioFactory.getInstance();
-	private final GpioPinDigitalOutput sensorTrigPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_05, PinState.LOW);
-	private final GpioPinDigitalInput sensorEchoPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_DOWN);
+	private GpioController gpioController = GpioFactory.getInstance();
+	private GpioPinDigitalOutput sensorTrigPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_05, PinState.LOW);
+	private GpioPinDigitalInput sensorEchoPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_DOWN);
 	private int timeUntilTimeout = 5000;
 	private long startTime;
 	private long endTime;
 
 	public long distanceFromObject()
 	{
-		initSensor();
+		init();
 		System.out.print("Ultrasonic Sensor Start \n");
 		waitForNextPulse();
 		System.out.print("Ultrasonic Sensor Pulse Finish \n");
-		shutdownSensor();
+		shutdown();
 		return measureDistanceInCM();
 	}
 
-	private void initSensor()
+	private void init()
 	{
 		sensorTrigPin.setShutdownOptions(true, PinState.LOW);
 		sensorEchoPin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
@@ -65,7 +65,7 @@ public class UltrasonicSensor
 		return timeUntilTimeout-- <= 0;
 	}
 
-	private void shutdownSensor()
+	private void shutdown()
 	{
 		gpioController.shutdown();
 		gpioController.unprovisionPin(sensorTrigPin);

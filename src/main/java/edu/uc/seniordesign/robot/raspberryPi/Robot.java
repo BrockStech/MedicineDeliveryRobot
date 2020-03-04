@@ -1,6 +1,9 @@
-package edu.uc.seniordesign.robot.movement;
+package edu.uc.seniordesign.robot.raspberryPi;
 
-public class Start 
+import edu.uc.seniordesign.robot.skills.IndexMotor;
+import edu.uc.seniordesign.robot.skills.UltrasonicSensor;
+
+public class Robot
 {
 	IndexMotor indexMotor = new IndexMotor();
 	UltrasonicSensor ultrasonicSensor = new UltrasonicSensor();

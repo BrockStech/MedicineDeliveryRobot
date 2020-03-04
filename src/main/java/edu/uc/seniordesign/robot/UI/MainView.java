@@ -1,25 +1,25 @@
 package edu.uc.seniordesign.robot.UI;
 
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.H5;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.progressbar.ProgressBar;
+import com.vaadin.flow.component.timepicker.TimePicker;
+import com.vaadin.flow.router.Route;
+import edu.uc.seniordesign.robot.database.Results;
+import edu.uc.seniordesign.robot.raspberryPi.DeliveryTime;
+import edu.uc.seniordesign.robot.raspberryPi.Robot;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
-
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.timepicker.TimePicker;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.progressbar.ProgressBar;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.H4;
-import com.vaadin.flow.component.html.H5;
-import com.vaadin.flow.router.Route;
-import edu.uc.seniordesign.robot.database.Results;
-import edu.uc.seniordesign.robot.movement.DeliveryTime;
-import edu.uc.seniordesign.robot.movement.Start;
 
 @Route
 public class MainView extends VerticalLayout {
@@ -31,7 +31,7 @@ public class MainView extends VerticalLayout {
 	private boolean mobile = false;
 	Results results = new Results();
 	ArrayList<String> scheduledDeliveryTimes = new ArrayList<String>();
-	Start startRobot = new Start();
+	Robot robot = new Robot();
 	DeliveryTime deliveryTime = new DeliveryTime();
 	
 
@@ -64,7 +64,7 @@ public MainView() {
     createButton(bedroom1Button);
     bedroom1Button.addClickListener(event -> 
 	  { 
-		  startRobot.testIndexMotor();
+		  robot.testIndexMotor();
 	  });
     
     // Bedroom 2 Button
@@ -72,7 +72,7 @@ public MainView() {
     createButton(bedroom2Button);
     bedroom2Button.addClickListener(event -> 
 	  { 
-		  startRobot.testSensors();
+		  robot.testSensors();
 	  });
     
     // Living Room Button
