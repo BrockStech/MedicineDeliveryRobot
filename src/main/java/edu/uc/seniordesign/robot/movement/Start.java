@@ -7,16 +7,18 @@ public class Start
 	
 	public void testIndexMotor()
 	{
-		System.out.print("TestIndexMotor has been started\n");
+		System.out.print("TestIndexMotor has been started \n");
 		indexMotor.rotateMotor();
+		System.out.print("TestIndexMotor has Finished \n");
 	}
 	
 	public void testSensors()
 	{
 		System.out.print("TestSensors has been started\n");
-		while (ultrasonicSensor.distanceFromObject() > 1)
+		while (ultrasonicSensor.distanceFromObject() > .001)
 		{
 			System.out.print("Distance: " + ultrasonicSensor.distanceFromObject() + " cm \n");
 		}
+		System.out.print("END TEST \n");
 	}
 }
