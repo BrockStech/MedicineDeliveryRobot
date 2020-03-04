@@ -1,36 +1,30 @@
 package edu.uc.seniordesign.robot.movement;
 
-import com.pi4j.component.motor.impl.GpioStepperMotorComponent;
-import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioFactory;
-import com.pi4j.io.gpio.GpioPinDigitalOutput;
-import com.pi4j.io.gpio.PinState;
-import com.pi4j.io.gpio.RaspiPin;
+import com.pi4j.io.gpio.*;
 
 public class IndexMotor 
 {
 	private final GpioController gpioController = GpioFactory.getInstance();
-	private GpioPinDigitalOutput gpioMotorPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_00, PinState.LOW);
+	private final GpioPinDigitalOutput gpioMotorPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_00, PinState.LOW);
 
-	private GpioPinDigitalOutput initMotor()
+	private void initMotor()
 	{
-		gpioController.setShutdownOptions(true, PinState.LOW, gpioMotorPin);
-		return gpioMotorPin;
+		gpioMotorPin.setShutdownOptions(true, PinState.LOW);
 	}
 	
 	public void rotateMotor()
 	{
-		// TURN OFF AND REOPEN PINS
-		GpioPinDigitalOutput indexMotor = initMotor();
+		initMotor();
 		System.out.print("TestIndexMotor is off \n");
-		indexMotor.high();
-		System.out.print("TestIndexMotor is on \n");
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		indexMotor.low();
+		gpioMotorPin.pulse(5000, true);
+		System.out.print("TestIndexMotor is on for 5 seconds \n");
 		System.out.print("TestIndexMotor is off \n");
+		shutdownSensor();
+	}
+
+	private void shutdownSensor()
+	{
+		gpioController.shutdown();
+		gpioController.unprovisionPin(gpioMotorPin);
 	}
 }

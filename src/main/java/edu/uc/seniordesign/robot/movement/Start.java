@@ -15,9 +15,11 @@ public class Start
 	public void testSensors()
 	{
 		System.out.print("TestSensors has been started\n");
-		while (ultrasonicSensor.distanceFromObject() > .001)
+		long distanceFromObjectInCM = ultrasonicSensor.distanceFromObject();
+		while (distanceFromObjectInCM > 5)
 		{
-			System.out.print("Distance: " + ultrasonicSensor.distanceFromObject() + " cm \n");
+			System.out.print("Distance: " + distanceFromObjectInCM + " cm \n");
+			distanceFromObjectInCM = ultrasonicSensor.distanceFromObject();
 		}
 		System.out.print("END TEST \n");
 	}
