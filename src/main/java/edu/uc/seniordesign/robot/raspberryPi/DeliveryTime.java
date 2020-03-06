@@ -19,7 +19,7 @@ public class DeliveryTime
 	private LocalTime nextDeliveryTime()
 	{
 		ArrayList<String> times = getDeliveryTimes();
-		TreeSet<LocalTime> deliveryTimes = new TreeSet<LocalTime>();
+		TreeSet<LocalTime> deliveryTimes = new TreeSet<>();
 		for (String time : times)
 		{
 			deliveryTimes.add(LocalTime.parse(time, DateTimeFormatter.ofPattern("hh:mm a")));

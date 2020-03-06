@@ -30,7 +30,7 @@ public class MainView extends VerticalLayout {
 	private static final long serialVersionUID = 558175629664324863L;
 	private boolean mobile = false;
 	Results results = new Results();
-	ArrayList<String> scheduledDeliveryTimes = new ArrayList<String>();
+	ArrayList<String> scheduledDeliveryTimes = new ArrayList();
 	Robot robot = new Robot();
 	DeliveryTime deliveryTime = new DeliveryTime();
 	
@@ -62,18 +62,12 @@ public MainView() {
     // Bedroom 1 Button
     Button bedroom1Button = new Button("Index Motor");
     createButton(bedroom1Button);
-    bedroom1Button.addClickListener(event -> 
-	  { 
-		  robot.testIndexMotor();
-	  });
+    bedroom1Button.addClickListener(event -> robot.testIndexMotor());
     
     // Bedroom 2 Button
     Button bedroom2Button = new Button("Test Sensor");
     createButton(bedroom2Button);
-    bedroom2Button.addClickListener(event -> 
-	  { 
-		  robot.testSensors();
-	  });
+    bedroom2Button.addClickListener(event -> robot.testSensors());
     
     // Living Room Button
     Button livingRoomButton = new Button("Living Room");
@@ -158,17 +152,14 @@ public MainView() {
     resetTimeButton.addClickListener(event ->
 	{
 		scheduledRobotTimes.removeAll();
-		results.insertResults(new ArrayList<String>());
-		scheduledDeliveryTimes = new ArrayList<String>();
+		results.insertResults(new ArrayList());
+		scheduledDeliveryTimes = new ArrayList();
 		resetTimeButton.setVisible(false);
 		submitTimeButton.setVisible(false);
 		deliverySetupText.setText("You don't have any times for delivery setup. You can add scheduled delivery times by using the above dropdown.");
 	});
     
-    submitTimeButton.addClickListener(event ->
-	{
-		results.insertResults(scheduledDeliveryTimes);
-	});
+    submitTimeButton.addClickListener(event -> results.insertResults(scheduledDeliveryTimes));
     
     // HorizontalLayout for Submit and Reset Buttons
     HorizontalLayout resetSubmitLayout = new HorizontalLayout();

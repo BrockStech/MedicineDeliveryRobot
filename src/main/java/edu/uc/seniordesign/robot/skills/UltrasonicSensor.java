@@ -6,26 +6,34 @@ public class UltrasonicSensor
 {
 	private final static int CONVERT_NANO_TIME_TO_CM = 58200;
 	private GpioController gpioController = GpioFactory.getInstance();
-	private GpioPinDigitalOutput sensorTrigPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_05, PinState.LOW);
-	private GpioPinDigitalInput sensorEchoPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_DOWN);
-	private int timeUntilTimeout = 5000;
+	private GpioPinDigitalOutput centerSensorTrigPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_05, PinState.LOW);
+	private GpioPinDigitalInput centerSensorEchoPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_DOWN);
+	private GpioPinDigitalOutput leftSensorTrigPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_06, PinState.LOW);
+	private GpioPinDigitalInput leftSensorEchoPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_10, PinPullResistance.PULL_DOWN);
+	private GpioPinDigitalOutput rightSensorTrigPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_27, PinState.LOW);
+	private GpioPinDigitalInput rightSensorEchoPin = gpioController.provisionDigitalInputPin(RaspiPin.GPIO_28, PinPullResistance.PULL_DOWN);
+	private int timeUntilTimeout;
 	private long startTime;
 	private long endTime;
 
-	public long distanceFromObject()
+	public long[] distanceFromObject()
 	{
 		init();
 		System.out.print("Ultrasonic Sensor Start \n");
 		waitForNextPulse();
 		System.out.print("Ultrasonic Sensor Pulse Finish \n");
 		shutdown();
-		return measureDistanceInCM();
+		return addDistanceToArray();
 	}
 
 	private void init()
 	{
-		sensorTrigPin.setShutdownOptions(true, PinState.LOW);
-		sensorEchoPin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
+		centerSensorTrigPin.setShutdownOptions(true, PinState.LOW);
+		centerSensorEchoPin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
+		leftSensorTrigPin.setShutdownOptions(true, PinState.LOW);
+		leftSensorEchoPin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
+		rightSensorTrigPin.setShutdownOptions(true, PinState.LOW);
+		rightSensorEchoPin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
 	}
 
 	private void waitForNextPulse()
@@ -43,13 +51,30 @@ public class UltrasonicSensor
 
 	private void transmitUltrasonicPulse() throws InterruptedException
 	{
-		sensorTrigPin.high();
+		centerSensorTrigPin.high();
+		leftSensorTrigPin.high();
+		rightSensorTrigPin.high();
 		Thread.sleep(0, 10000);
-		sensorTrigPin.low();
+		centerSensorTrigPin.low();
+		leftSensorTrigPin.low();
+		rightSensorTrigPin.low();
 	}
-	
-	private long measureDistanceInCM()
+
+	private long[] addDistanceToArray()
 	{
+		GpioPinDigitalInput[] sensorEchoPins = {centerSensorEchoPin, leftSensorEchoPin, rightSensorEchoPin};
+		long[] distances = new long[sensorEchoPins.length];
+		int i = 0;
+		for (GpioPinDigitalInput sensorEchoPin : sensorEchoPins)
+		{
+			distances[i++] = measureDistanceInCM(sensorEchoPin);
+		}
+		return distances;
+	}
+
+	private long measureDistanceInCM(GpioPinDigitalInput sensorEchoPin)
+	{
+		timeUntilTimeout = 5000;
 		System.out.print("Ultrasonic Sensor is Low \n");
 		while (sensorEchoPin.isLow() && !isTimeout()) {}
 		System.out.print("Ultrasonic Sensor is High \n");
@@ -68,7 +93,11 @@ public class UltrasonicSensor
 	private void shutdown()
 	{
 		gpioController.shutdown();
-		gpioController.unprovisionPin(sensorTrigPin);
-		gpioController.unprovisionPin(sensorEchoPin);
+		gpioController.unprovisionPin(centerSensorTrigPin);
+		gpioController.unprovisionPin(centerSensorEchoPin);
+		gpioController.unprovisionPin(leftSensorTrigPin);
+		gpioController.unprovisionPin(leftSensorEchoPin);
+		gpioController.unprovisionPin(rightSensorTrigPin);
+		gpioController.unprovisionPin(rightSensorEchoPin);
 	}
 }

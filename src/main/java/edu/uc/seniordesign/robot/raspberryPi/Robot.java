@@ -18,11 +18,13 @@ public class Robot
 	public void testSensors()
 	{
 		System.out.print("TestSensors has been started\n");
-		long distanceFromObjectInCM = ultrasonicSensor.distanceFromObject();
-		while (distanceFromObjectInCM > 5)
+		long[] distancesFromObject = ultrasonicSensor.distanceFromObject();
+		while (distancesFromObject[0] > 5 && distancesFromObject[1] > 5 && distancesFromObject[2] > 5)
 		{
-			System.out.print("Distance: " + distanceFromObjectInCM + " cm \n");
-			distanceFromObjectInCM = ultrasonicSensor.distanceFromObject();
+			System.out.print("Center Sensor Distance: " + distancesFromObject[0] + " cm \n");
+			System.out.print("Left Sensor Distance: " + distancesFromObject[1] + " cm \n");
+			System.out.print("Right Sensor Distance: " + distancesFromObject[2] + " cm \n");
+			distancesFromObject = ultrasonicSensor.distanceFromObject();
 		}
 		System.out.print("END TEST \n");
 	}
