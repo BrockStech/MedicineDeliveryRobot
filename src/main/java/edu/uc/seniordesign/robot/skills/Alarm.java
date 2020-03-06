@@ -5,7 +5,7 @@ import com.pi4j.io.gpio.*;
 public class Alarm
 {
     private final GpioController gpioController = GpioFactory.getInstance();
-    private final GpioPinDigitalOutput gpioAlarmPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_06, PinState.LOW);
+    private final GpioPinDigitalOutput gpioAlarmPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_26, PinState.LOW);
 
     private void init()
     {
