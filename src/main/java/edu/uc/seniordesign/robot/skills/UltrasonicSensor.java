@@ -76,16 +76,10 @@ public class UltrasonicSensor
 	{
 		timeUntilTimeout = 5000;
 		System.out.print("Ultrasonic Sensor is Low \n");
-		while (sensorEchoPin.isLow() && !isTimeout())
-		{
-			// DO NOTHING
-		}
+		while (sensorEchoPin.isLow() && !isTimeout()) {}
 		System.out.print("Ultrasonic Sensor is High \n");
 		startTime = System.nanoTime();
-		while (sensorEchoPin.isHigh())
-		{
-			// DO NOTHING
-		}
+		while (sensorEchoPin.isHigh()) {}
 		System.out.print("Ultrasonic Sensor is Low2 \n");
 		endTime = System.nanoTime();
 		return ((endTime - startTime) / CONVERT_NANO_TIME_TO_CM);
