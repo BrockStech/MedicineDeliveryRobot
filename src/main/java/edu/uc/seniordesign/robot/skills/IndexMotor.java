@@ -2,29 +2,23 @@ package edu.uc.seniordesign.robot.skills;
 
 import com.pi4j.io.gpio.*;
 
-public class IndexMotor 
+public class IndexMotor
 {
-	private final GpioController gpioController = GpioFactory.getInstance();
-	private final GpioPinDigitalOutput gpioMotorPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_00, PinState.LOW);
+	private GpioPinDigitalOutput gpioMotorPin;
 
-	private void init()
+	public IndexMotor(GpioController gpioController)
 	{
+		gpioMotorPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_00, PinState.LOW);
 		gpioMotorPin.setShutdownOptions(true, PinState.LOW);
 	}
-	
-	public void rotateMotor()
+
+	public void rotateMotor(GpioController gpioController)
 	{
-		init();
 		System.out.print("TestIndexMotor is off \n");
 		gpioMotorPin.pulse(5000, true);
 		System.out.print("TestIndexMotor is on for 5 seconds \n");
 		System.out.print("TestIndexMotor is off \n");
-		shutdown();
-	}
-
-	private void shutdown()
-	{
-		gpioController.shutdown();
-		gpioController.unprovisionPin(gpioMotorPin);
 	}
 }
+
+
