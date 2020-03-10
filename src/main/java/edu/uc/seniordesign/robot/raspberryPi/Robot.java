@@ -2,7 +2,7 @@ package edu.uc.seniordesign.robot.raspberryPi;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
-import edu.uc.seniordesign.robot.map.apartmentMap;
+import edu.uc.seniordesign.robot.map.Room;
 import edu.uc.seniordesign.robot.skills.Alarm;
 import edu.uc.seniordesign.robot.skills.IndexMotor;
 import edu.uc.seniordesign.robot.skills.UltrasonicSensor;
@@ -13,21 +13,27 @@ import java.util.Collections;
 
 public class Robot
 {
-	public final GpioController gpioController = GpioFactory.getInstance();
+	GpioController gpioController;
 	DriveMotor driveMotor;
 	UltrasonicSensor ultrasonicSensor;
 	IndexMotor indexMotor;
 	Alarm alarm;
-	apartmentMap apartmentMap;
+	Room room;
 	private static final long SECONDS_TO_MILLISECONDS = 1000;
 
 	public Robot()
 	{
+		equipRobotWithSkills();
+	}
+
+	protected void equipRobotWithSkills()
+	{
+		gpioController = GpioFactory.getInstance();
 		driveMotor = new DriveMotor(gpioController);
 		ultrasonicSensor = new UltrasonicSensor(gpioController);
 		indexMotor = new IndexMotor(gpioController);
 		alarm = new Alarm(gpioController);
-		apartmentMap = new apartmentMap();
+		room = new Room();
 	}
 
 	public void testIndexMotor()
@@ -51,9 +57,9 @@ public class Robot
 		System.out.print("END TEST \n");
 	}
 
-	public void deliverMedicineToBathroom(apartmentMap apartmentMap)
+	public void deliverMedicineToBathroom(Room room)
 	{
-		String[] directions = apartmentMap.toBathroom();
+		String[] directions = room.toBathroom();
 		readMap(directions);
 	}
 
@@ -71,11 +77,11 @@ public class Robot
 		readMap(directions);
 	}
 
-	private void readMap(String[] directions)
+	protected void readMap(String[] directions)
 	{
-		for (String direction: directions)
+		for (int i = 0; i < directions.length; i++)
 		{
-			switch (direction)
+			switch (directions[i])
 			{
 				case "left":
 					driveMotor.left();
@@ -93,13 +99,18 @@ public class Robot
 					driveMotor.stop();
 					break;
 				default:
-					scanSensorsForTime(convertStringToLong(direction));
+					long obstacleAvoidanceTimeAdded = scanSensorsForTime(convertStringToLong(directions[i]));
 					driveMotor.stop();
+					if (obstacleAvoidanceTimeAdded > 0)
+					{
+						directions[i] = String.valueOf(convertStringToLong(directions[i]) - obstacleAvoidanceTimeAdded);
+						directions[i-1] = "34";
+					}
 			}
 		}
 	}
 
-	private long convertStringToLong(String direction)
+	protected long convertStringToLong(String direction)
 	{
 		long timeInSecondsToScanSensors;
 		try
@@ -113,14 +124,15 @@ public class Robot
 		return timeInSecondsToScanSensors;
 	}
 
-	private void scanSensorsForTime(long timeInSecondsToScanSensors)
+	protected long scanSensorsForTime(long timeInSecondsToScanSensors)
 	{
 		long scanSensorsLength = timeInSecondsToScanSensors * SECONDS_TO_MILLISECONDS;
 		long endTime = System.currentTimeMillis() + scanSensorsLength;
-		while (System.currentTimeMillis() < scanSensorsLength && surroundingAreaIsSafe()) { }
+		while (System.currentTimeMillis() < endTime && surroundingAreaIsSafe()) { }
+		return endTime - System.currentTimeMillis();
 	}
 
-	private boolean surroundingAreaIsSafe()
+	protected boolean surroundingAreaIsSafe()
 	{
 		long[] distancesFromObject = ultrasonicSensor.distanceFromObject();
 		return distancesFromObject[0] > 5 && distancesFromObject[1] > 5 && distancesFromObject[2] > 5;

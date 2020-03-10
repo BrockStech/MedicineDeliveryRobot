@@ -1,7 +1,9 @@
 package edu.uc.seniordesign.robot.map;
 
-public class apartmentMap
+public class Room
 {
+
+
     public String[] toBathroom()
     {
         return new String[]{"forward", "5", "left"};
