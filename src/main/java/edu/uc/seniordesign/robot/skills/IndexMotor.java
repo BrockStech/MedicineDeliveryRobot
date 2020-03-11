@@ -8,16 +8,27 @@ public class IndexMotor
 
 	public IndexMotor(GpioController gpioController)
 	{
-		gpioMotorPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_00, PinState.LOW);
-		gpioMotorPin.setShutdownOptions(true, PinState.LOW);
+		gpioMotorPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_00, PinState.HIGH);
+		gpioMotorPin.setShutdownOptions(true);
 	}
 
-	public void rotateMotor(GpioController gpioController)
+	/**
+	 * NOTE: For the Index Motor low is on and high is off!
+	 */
+	public void rotateMotor()
 	{
-		System.out.print("TestIndexMotor is off \n");
-		gpioMotorPin.pulse(5000, true);
-		System.out.print("TestIndexMotor is on for 5 seconds \n");
-		System.out.print("TestIndexMotor is off \n");
+		gpioMotorPin.low();
+		System.out.print("Index Motor is on \n");
+		try
+		{
+			Thread.sleep(300);
+		}
+		catch(InterruptedException e)
+		{
+			System.out.print("Index Motor Error! \n");
+		}
+		gpioMotorPin.high();
+		System.out.print("Index Motor is off \n");
 	}
 }
 

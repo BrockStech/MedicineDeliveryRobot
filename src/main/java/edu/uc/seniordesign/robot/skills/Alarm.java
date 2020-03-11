@@ -8,15 +8,31 @@ public class Alarm
 
     public Alarm(GpioController gpioController)
     {
-        GpioPinDigitalOutput gpioAlarmPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_26, PinState.LOW);
+        gpioAlarmPin = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_26, PinState.LOW);
         gpioAlarmPin.setShutdownOptions(true, PinState.LOW);
     }
 
-    public void soundAlarm(GpioController gpioController)
+    public void soundAlarm()
     {
         System.out.print("Alarm is off \n");
-        gpioAlarmPin.pulse(5000, true);
-        System.out.print("Alarm is on for 5 seconds \n");
+        gpioAlarmPin.pulse(300, true);
+        System.out.print("Alarm is on for .3 seconds \n");
+        System.out.print("Alarm is off \n");
+    }
+
+    public void soundAlarmBackwards()
+    {
+        gpioAlarmPin.high();
+        System.out.print("Alarm is on \n");
+        try
+        {
+            Thread.sleep(300);
+        }
+        catch(InterruptedException e)
+        {
+            System.out.print("Alarm Error! \n");
+        }
+        gpioAlarmPin.low();
         System.out.print("Alarm is off \n");
     }
 }
