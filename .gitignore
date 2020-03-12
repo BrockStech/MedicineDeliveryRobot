@@ -1,5 +1,7 @@
 /src/main/java/edu/uc/seniordesign/robot/database/JDBCMySQLConnection.java
 target/
+*.md
+*.map
 *.class
 *.jar
 *.war

@@ -13,13 +13,16 @@ import java.util.Collections;
 
 public class Robot
 {
+	private static final long SECONDS_TO_MILLISECONDS = 1000;
 	GpioController gpioController;
 	DriveMotor driveMotor;
-	UltrasonicSensor ultrasonicSensor;
+	UltrasonicSensor centerUltrasonicSensor;
+	UltrasonicSensor leftUltrasonicSensor;
+	UltrasonicSensor rightUltrasonicSensor;
+	UltrasonicSensor[] ultrasonicSensors;
 	IndexMotor indexMotor;
 	Alarm alarm;
 	Room room;
-	private static final long SECONDS_TO_MILLISECONDS = 1000;
 
 	public Robot()
 	{
@@ -30,7 +33,10 @@ public class Robot
 	{
 		gpioController = GpioFactory.getInstance();
 		driveMotor = new DriveMotor(gpioController);
-		ultrasonicSensor = new UltrasonicSensor(gpioController);
+		centerUltrasonicSensor = new UltrasonicSensor(gpioController, 5, 4);
+		leftUltrasonicSensor = new UltrasonicSensor(gpioController, 6, 10);
+		rightUltrasonicSensor = new UltrasonicSensor(gpioController, 27, 28);
+		ultrasonicSensors = new UltrasonicSensor[]{centerUltrasonicSensor, leftUltrasonicSensor, rightUltrasonicSensor};
 		indexMotor = new IndexMotor(gpioController);
 		alarm = new Alarm(gpioController);
 		room = new Room();
@@ -39,23 +45,33 @@ public class Robot
 	public void testIndexMotor()
 	{
 		System.out.print("TestIndexMotor has been started \n");
-		indexMotor.rotateMotor(gpioController);
+		indexMotor.rotateMotor();
 		System.out.print("TestIndexMotor has Finished \n");
 	}
 	
 	public void testSensors()
 	{
-		System.out.print("TestSensors has been started\n");
-		long[] distancesFromObject = ultrasonicSensor.distanceFromObject();
-		while (distancesFromObject[0] > 5 && distancesFromObject[1] > 5 && distancesFromObject[2] > 5)
+		System.out.print("Test Sensors has been started\n");
+		long sensorDistance = -1;
+		while (sensorDistance != 27)
 		{
-			System.out.print("Center Sensor Distance: " + distancesFromObject[0] + " cm \n");
-			System.out.print("Left Sensor Distance: " + distancesFromObject[1] + " cm \n");
-			System.out.print("Right Sensor Distance: " + distancesFromObject[2] + " cm \n");
-			distancesFromObject = ultrasonicSensor.distanceFromObject();
+			int i = 0;
+			for (UltrasonicSensor ultrasonicSensor : ultrasonicSensors)
+			{
+				sensorDistance = ultrasonicSensor.nearestObjectDistance();
+				i++;
+				if (sensorDistance >= 0 && sensorDistance < 10)
+				{
+					System.out.print("Sensor " + i + ": Distance from object: " + sensorDistance + "\n");
+					System.out.print("Object too close!! Returning false\n");
+				}
+				System.out.print("Sensor " + i + ": Distance from object: " + sensorDistance + "\n");
+			}
+			pauseForSensors();
 		}
-		System.out.print("END TEST \n");
+		System.out.print("You hit those!! \n");
 	}
+
 
 	public void deliverMedicineToBathroom(Room room)
 	{
@@ -134,7 +150,27 @@ public class Robot
 
 	protected boolean surroundingAreaIsSafe()
 	{
-		long[] distancesFromObject = ultrasonicSensor.distanceFromObject();
-		return distancesFromObject[0] > 5 && distancesFromObject[1] > 5 && distancesFromObject[2] > 5;
+		for (UltrasonicSensor ultrasonicSensor : ultrasonicSensors)
+		{
+			Long distance = ultrasonicSensor.nearestObjectDistance();
+			if (distance >= 0 && distance < 10)
+			{
+				return false;
+			}
+		}
+		pauseForSensors();
+		return true;
+	}
+
+	private void pauseForSensors()
+	{
+		try
+		{
+			Thread.sleep(1000);
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
