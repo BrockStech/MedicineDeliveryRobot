@@ -44,5 +44,5 @@ For our project we are tackling the problem of how hard it is for senior citizen
 
 ## Appendix
 * [Citations](https://github.com/BrockStech/SeniorDesign/blob/master/Assignments/Citations.md)
-* [Code Repository](https://github.com/BrockStech/SeniorDesign/tree/master/src/main/java/edu/uc/seniordesign/robot)
-* [Meeting Log](https://github.com/BrockStech/SeniorDesign/blob/master/Assignments/MeetingLog.pdf)
+* [Code Repository](https://github.com/BrockStech/MedicineDeliveryRobot)
+* [Meeting Log](https://github.com/BrockStech/SeniorDesign/blob/master/Assignments/SenorDesignMeetingLogSemester2.pdf)
