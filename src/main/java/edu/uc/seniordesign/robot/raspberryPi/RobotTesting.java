@@ -32,7 +32,7 @@ public class RobotTesting
             }
             pauseForSensors();
         }
-        System.out.print("You hit those!! \n");
+        System.out.print("Exit Test Sensors \n");
     }
 
     private void pauseForSensors()

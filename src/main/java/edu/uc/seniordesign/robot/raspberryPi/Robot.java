@@ -31,6 +31,7 @@ public class Robot
 
 	protected void equipRobotWithSkills()
 	{
+		resetGPIOController();
 		gpioController = GpioFactory.getInstance();
 		driveMotor = new DriveMotor(gpioController);
 		centerUltrasonicSensor = new UltrasonicSensor(gpioController, 5, 4);
@@ -40,6 +41,13 @@ public class Robot
 		indexMotor = new IndexMotor(gpioController);
 		alarm = new Alarm(gpioController);
 		room = new Room();
+	}
+
+	private void resetGPIOController()
+	{
+		gpioController = GpioFactory.getInstance();
+		gpioController.unexportAll();
+		gpioController.shutdown();
 	}
 
 	public void deliverMedicineToBathroom(Room room)
