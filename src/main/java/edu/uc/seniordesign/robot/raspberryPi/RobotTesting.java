@@ -8,7 +8,7 @@ public class RobotTesting
     public void testIndexMotor()
     {
         System.out.print("TestIndexMotor has been started \n");
-        robot.indexMotor.rotateMotor();
+        robot.indexMotor.dispenseMedicine();
         System.out.print("TestIndexMotor has Finished \n");
     }
 

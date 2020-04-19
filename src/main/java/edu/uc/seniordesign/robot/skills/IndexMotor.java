@@ -15,7 +15,7 @@ public class IndexMotor
 	/**
 	 * NOTE: For the Index Motor low is on and high is off!
 	 */
-	public void rotateMotor()
+	public void dispenseMedicine()
 	{
 		gpioMotorPin.low();
 		System.out.print("Index Motor is on \n");

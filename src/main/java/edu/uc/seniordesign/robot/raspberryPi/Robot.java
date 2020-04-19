@@ -50,22 +50,64 @@ public class Robot
 		gpioController.shutdown();
 	}
 
-	public void deliverMedicineToBathroom(Room room)
+	public void deliverMedicineToBathroom()
 	{
 		String[] directions = room.toBathroom();
 		readMap(directions);
+		completeArrivalTasks();
+		returnToHomeBase(directions);
+	}
+
+	public void deliverMedicineToBedroom1()
+	{
+		String[] directions = room.toBedroom1();
+		readMap(directions);
+		completeArrivalTasks();
+		returnToHomeBase(directions);
+	}
+
+	public void deliverMedicineToBedroom2()
+	{
+		String[] directions = room.toBedroom2();
+		readMap(directions);
+		completeArrivalTasks();
+		returnToHomeBase(directions);
+	}
+
+	public void deliverMedicineToLivingRoom()
+	{
+		String[] directions = room.toLivingRoom();
+		readMap(directions);
+		completeArrivalTasks();
+		returnToHomeBase(directions);
+	}
+
+	public void deliverMedicineToKitchen()
+	{
+		String[] directions = room.toKitchen();
+		readMap(directions);
+		completeArrivalTasks();
+		returnToHomeBase(directions);
+	}
+
+	public void deliverMedicineToDinningRoom()
+	{
+		String[] directions = room.toDinningRoom();
+		readMap(directions);
+		completeArrivalTasks();
+		returnToHomeBase(directions);
 	}
 
 	public void completeArrivalTasks()
 	{
-		//TODO: rotate medicine dispenser
-		//TODO: sound alarm
-		//TODO: wait to leave
+		alarm.soundAlarm();
+		indexMotor.dispenseMedicine();
+		driveMotor.left();
+		driveMotor.left();
 	}
 
 	public void returnToHomeBase(String[] directions)
 	{
-		// TODO: Turn 180 degrees
 		Collections.reverse(Arrays.asList(directions));
 		readMap(directions);
 	}

@@ -62,26 +62,32 @@ public MainView() {
     // Bedroom 1 Button
     Button bedroom1Button = new Button("Bedroom 1");
     createButton(bedroom1Button);
+    bedroom1Button.addClickListener(event-> robot.deliverMedicineToBedroom1());
     
     // Bedroom 2 Button
     Button bedroom2Button = new Button("Bedroom 2");
     createButton(bedroom2Button);
+    bedroom2Button.addClickListener(event-> robot.deliverMedicineToBedroom2());
     
     // Living Room Button
     Button livingRoomButton = new Button("Living Room");
     createButton(livingRoomButton);
+    livingRoomButton.addClickListener(event-> robot.deliverMedicineToLivingRoom());
     
     // Dinning Room Button
     Button dinningRoomButton = new Button("Dinning Room");
     createButton(dinningRoomButton);
+    dinningRoomButton.addClickListener(event-> robot.deliverMedicineToDinningRoom());
     
     // Kitchen Button
     Button kitchenButton = new Button("Kitchen");
     createButton(kitchenButton);
+    kitchenButton.addClickListener(event-> robot.deliverMedicineToKitchen());
     
     // Bathroom Button
     Button bathroomButton = new Button("Bathroom");
     createButton(bathroomButton);
+    bathroomButton.addClickListener(event-> robot.deliverMedicineToBathroom());
 	
     // Create vertical layout for the 3 of 6 rooms (popular)
  	VerticalLayout popularRoomLayout = new VerticalLayout();

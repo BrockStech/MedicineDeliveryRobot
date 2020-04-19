@@ -2,40 +2,33 @@ package edu.uc.seniordesign.robot.map;
 
 public class Room
 {
-
-
     public String[] toBathroom()
     {
-        return new String[]{"forward", "5", "left"};
+        return new String[]{"forward", "8", "left", "forward", "23", "stop"};
     }
 
-    public void toBedroom1()
+    public String[] toBedroom1()
     {
-        //TODO
+        return new String[]{"forward", "8", "left", "forward", "20", "right", "forward", "6", "left", "forward", "4", "stop"};
     }
 
-    public void toBedroom2()
+    public String[] toBedroom2()
     {
-        //TODO
+        return new String[]{"forward", "8", "left", "forward", "20", "left", "forward", "4", "right", "forward", "2", "stop"};
     }
 
-    public void toDinningRoom()
+    public String[] toDinningRoom()
     {
-        //TODO
+        return new String[]{"forward", "12", "left", "forward", "2", "right", "forward", "3", "stop"};
     }
 
-    public void toLivingRoom()
+    public String[] toLivingRoom()
     {
-        //TODO
+        return new String[]{"forward", "4", "left", "forward", "2", "stop"};
     }
 
-    public void toKitchen()
+    public String[] toKitchen()
     {
-        //TODO
-    }
-
-    public void toBase()
-    {
-        //TODO
+        return new String[]{"forward", "8", "left", "forward", "14", "right", "forward", "7", "stop"};
     }
 }
