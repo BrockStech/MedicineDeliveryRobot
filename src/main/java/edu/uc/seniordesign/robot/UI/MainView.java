@@ -60,20 +60,18 @@ public MainView() {
     progressBar.setVisible(false);
     
     // Bedroom 1 Button
-    Button bedroom1Button = new Button("Index Motor");
+    Button bedroom1Button = new Button("Bedroom 1");
     createButton(bedroom1Button);
-    bedroom1Button.addClickListener(event -> robot.testIndexMotor());
     
     // Bedroom 2 Button
-    Button bedroom2Button = new Button("Test Sensor");
+    Button bedroom2Button = new Button("Bedroom 2");
     createButton(bedroom2Button);
-    bedroom2Button.addClickListener(event -> robot.testSensors());
     
     // Living Room Button
     Button livingRoomButton = new Button("Living Room");
     createButton(livingRoomButton);
     
-    // Living Room Button
+    // Dinning Room Button
     Button dinningRoomButton = new Button("Dinning Room");
     createButton(dinningRoomButton);
     
