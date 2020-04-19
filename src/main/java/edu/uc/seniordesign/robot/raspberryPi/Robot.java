@@ -42,37 +42,6 @@ public class Robot
 		room = new Room();
 	}
 
-	public void testIndexMotor()
-	{
-		System.out.print("TestIndexMotor has been started \n");
-		indexMotor.rotateMotor();
-		System.out.print("TestIndexMotor has Finished \n");
-	}
-	
-	public void testSensors()
-	{
-		System.out.print("Test Sensors has been started\n");
-		long sensorDistance = -1;
-		while (sensorDistance != 27)
-		{
-			int i = 0;
-			for (UltrasonicSensor ultrasonicSensor : ultrasonicSensors)
-			{
-				sensorDistance = ultrasonicSensor.nearestObjectDistance();
-				i++;
-				if (sensorDistance >= 0 && sensorDistance < 10)
-				{
-					System.out.print("Sensor " + i + ": Distance from object: " + sensorDistance + "\n");
-					System.out.print("Object too close!! Returning false\n");
-				}
-				System.out.print("Sensor " + i + ": Distance from object: " + sensorDistance + "\n");
-			}
-			pauseForSensors();
-		}
-		System.out.print("You hit those!! \n");
-	}
-
-
 	public void deliverMedicineToBathroom(Room room)
 	{
 		String[] directions = room.toBathroom();
