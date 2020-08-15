@@ -52,64 +52,39 @@ public class Robot
 
 	public void deliverMedicineToBathroom()
 	{
-		String[] directions = room.toBathroom();
-		readMap(directions);
-		completeArrivalTasks();
-		returnToHomeBase(directions);
+		deliverMedicine(room.toBathroom());
 	}
 
 	public void deliverMedicineToBedroom1()
 	{
-		String[] directions = room.toBedroom1();
-		readMap(directions);
-		completeArrivalTasks();
-		returnToHomeBase(directions);
+		deliverMedicine(room.toBedroom1());
 	}
 
 	public void deliverMedicineToBedroom2()
 	{
-		String[] directions = room.toBedroom2();
-		readMap(directions);
-		completeArrivalTasks();
-		returnToHomeBase(directions);
+		deliverMedicine(room.toBedroom2());
 	}
 
 	public void deliverMedicineToLivingRoom()
 	{
-		String[] directions = room.toLivingRoom();
-		readMap(directions);
-		completeArrivalTasks();
-		returnToHomeBase(directions);
+		deliverMedicine(room.toLivingRoom());
 	}
 
 	public void deliverMedicineToKitchen()
 	{
-		String[] directions = room.toKitchen();
-		readMap(directions);
-		completeArrivalTasks();
-		returnToHomeBase(directions);
+		deliverMedicine(room.toKitchen());
 	}
 
 	public void deliverMedicineToDinningRoom()
 	{
-		String[] directions = room.toDinningRoom();
+		deliverMedicine(room.toDinningRoom());
+	}
+
+	protected void deliverMedicine(String[] directions)
+	{
 		readMap(directions);
 		completeArrivalTasks();
 		returnToHomeBase(directions);
-	}
-
-	public void completeArrivalTasks()
-	{
-		alarm.soundAlarm();
-		indexMotor.dispenseMedicine();
-		driveMotor.left();
-		driveMotor.left();
-	}
-
-	public void returnToHomeBase(String[] directions)
-	{
-		Collections.reverse(Arrays.asList(directions));
-		readMap(directions);
 	}
 
 	protected void readMap(String[] directions)
@@ -172,7 +147,7 @@ public class Robot
 		for (UltrasonicSensor ultrasonicSensor : ultrasonicSensors)
 		{
 			Long distance = ultrasonicSensor.nearestObjectDistance();
-			if (distance >= 0 && distance < 10)
+			if (distance >= 0 && distance < 5)
 			{
 				return false;
 			}
@@ -191,5 +166,19 @@ public class Robot
 		{
 			e.printStackTrace();
 		}
+	}
+
+	private void completeArrivalTasks()
+	{
+		alarm.soundAlarm();
+		indexMotor.dispenseMedicine();
+		driveMotor.left();
+		driveMotor.left();
+	}
+
+	private void returnToHomeBase(String[] directions)
+	{
+		Collections.reverse(Arrays.asList(directions));
+		readMap(directions);
 	}
 }
